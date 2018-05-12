@@ -1,5 +1,5 @@
-package org.jerry.light4j.member.etm.member.user.domain;
-import java.sql.Timestamp;
+package org.jerry.light4j.member.business.member.user.domain;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class MemberUser{
     *自增列
     */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ID",columnDefinition = "bigint")
     private Long pkId;
     /**
@@ -36,13 +36,13 @@ public class MemberUser{
     /**
     *用户账号
     */
-    @Column(name = "MEMBER_USER_ACCOUNT",columnDefinition = "varchar")
-    private String memberUserAccount;
+    @Column(name = "MEMBER_USER_LOGIN_ACCOUNT",columnDefinition = "varchar")
+    private String memberUserLoginAccount;
     /**
     *用户手机号
     */
-    @Column(name = "MEMBER_USER_PHONE",columnDefinition = "varchar")
-    private String memberUserPhone;
+    @Column(name = "MEMBER_USER_PHONE_NUMBER",columnDefinition = "varchar")
+    private String memberUserPhoneNumber;
     /**
     *用户邮箱
     */
@@ -51,18 +51,18 @@ public class MemberUser{
     /**
     *用户登陆密码
     */
-    @Column(name = "MEMBER_USER_PASSWORD",columnDefinition = "varchar")
-    private String memberUserPassword;
+    @Column(name = "MEMBER_USER_LOGIN_PASSWORD",columnDefinition = "varchar")
+    private String memberUserLoginPassword;
     /**
     *用户tokenid
     */
-    @Column(name = "MEMBER_USER_TOKENID",columnDefinition = "varchar")
-    private String memberUserTokenid;
+    @Column(name = "MEMBER_USER_TOKEN_ID",columnDefinition = "varchar")
+    private String memberUserToken_Id;
     /**
     *用户最后登陆时间
     */
-    @Column(name = "MEMBER_USER_LAST_DATE",columnDefinition = "datetime")
-    private Timestamp memberUserLastDate;
+    @Column(name = "MEMBER_USER_CREATE_DATE",columnDefinition = "date")
+    private Date memberUserCreateDate;
     /**
     *用户角色编号
     */
@@ -71,8 +71,8 @@ public class MemberUser{
     /**
     *用户排序编号
     */
-    @Column(name = "MEMBER_USER_LIST_ORDER",columnDefinition = "varchar")
-    private String memberUserListOrder;
+    @Column(name = "MEMBER_USER_ORDER_BY",columnDefinition = "varchar")
+    private String memberUserOrderBy;
 
 	public Long getPkId() {
 		return pkId;
@@ -92,17 +92,11 @@ public class MemberUser{
 	public void setMemberUserName(String memberUserName) {
 		this.memberUserName = memberUserName;
 	}
-	public String getMemberUserAccount() {
-		return memberUserAccount;
+	public String getMemberUserLoginAccount() {
+		return memberUserLoginAccount;
 	}
-	public void setMemberUserAccount(String memberUserAccount) {
-		this.memberUserAccount = memberUserAccount;
-	}
-	public String getMemberUserPhone() {
-		return memberUserPhone;
-	}
-	public void setMemberUserPhone(String memberUserPhone) {
-		this.memberUserPhone = memberUserPhone;
+	public void setMemberUserLoginAccount(String memberUserLoginAccount) {
+		this.memberUserLoginAccount = memberUserLoginAccount;
 	}
 	public String getMemberUserEmail() {
 		return memberUserEmail;
@@ -110,23 +104,11 @@ public class MemberUser{
 	public void setMemberUserEmail(String memberUserEmail) {
 		this.memberUserEmail = memberUserEmail;
 	}
-	public String getMemberUserPassword() {
-		return memberUserPassword;
+	public String getMemberUserLoginPassword() {
+		return memberUserLoginPassword;
 	}
-	public void setMemberUserPassword(String memberUserPassword) {
-		this.memberUserPassword = memberUserPassword;
-	}
-	public String getMemberUserTokenid() {
-		return memberUserTokenid;
-	}
-	public void setMemberUserTokenid(String memberUserTokenid) {
-		this.memberUserTokenid = memberUserTokenid;
-	}
-	public Timestamp getMemberUserLastDate() {
-		return memberUserLastDate;
-	}
-	public void setMemberUserLastDate(Timestamp memberUserLastDate) {
-		this.memberUserLastDate = memberUserLastDate;
+	public void setMemberUserLoginPassword(String memberUserLoginPassword) {
+		this.memberUserLoginPassword = memberUserLoginPassword;
 	}
 	public String getMemberUserRoleCode() {
 		return memberUserRoleCode;
@@ -134,12 +116,31 @@ public class MemberUser{
 	public void setMemberUserRoleCode(String memberUserRoleCode) {
 		this.memberUserRoleCode = memberUserRoleCode;
 	}
-	public String getMemberUserListOrder() {
-		return memberUserListOrder;
+	public String getMemberUserPhoneNumber() {
+		return memberUserPhoneNumber;
 	}
-	public void setMemberUserListOrder(String memberUserListOrder) {
-		this.memberUserListOrder = memberUserListOrder;
+	public void setMemberUserPhoneNumber(String memberUserPhoneNumber) {
+		this.memberUserPhoneNumber = memberUserPhoneNumber;
 	}
+	public Date getMemberUserCreateDate() {
+		return memberUserCreateDate;
+	}
+	public void setMemberUserCreateDate(Date memberUserCreateDate) {
+		this.memberUserCreateDate = memberUserCreateDate;
+	}
+	public String getMemberUserOrderBy() {
+		return memberUserOrderBy;
+	}
+	public void setMemberUserOrderBy(String memberUserOrderBy) {
+		this.memberUserOrderBy = memberUserOrderBy;
+	}
+	public String getMemberUserToken_Id() {
+		return memberUserToken_Id;
+	}
+	public void setMemberUserToken_Id(String memberUserToken_Id) {
+		this.memberUserToken_Id = memberUserToken_Id;
+	}
+	
     
 	
 }

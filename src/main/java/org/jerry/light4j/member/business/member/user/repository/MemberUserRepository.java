@@ -1,9 +1,9 @@
-package org.jerry.light4j.member.etm.member.user.repository;
+package org.jerry.light4j.member.business.member.user.repository;
 
 import java.io.Serializable;
 
+import org.jerry.light4j.member.business.member.user.domain.MemberUser;
 import org.jerry.light4j.member.common.base.repository.BaseMotifyRepository;
-import org.jerry.light4j.member.etm.member.user.domain.MemberUser;
 import org.springframework.stereotype.Repository;
 
 /********************************************
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
  *********************************************/
 @Repository
 public interface MemberUserRepository extends BaseMotifyRepository<MemberUser, Serializable>{
+	
+	public MemberUser findByMemberUserCode(String memberUserCode);
 
 	
 }
