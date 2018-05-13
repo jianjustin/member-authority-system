@@ -21,7 +21,7 @@ public class MemberResource{
     */
 	@Id
     @Column(name = "PK_ID",columnDefinition = "bigint")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pkId;
     /**
     *资源编号

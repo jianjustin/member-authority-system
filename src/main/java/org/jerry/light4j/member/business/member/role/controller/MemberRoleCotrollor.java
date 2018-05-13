@@ -31,7 +31,7 @@ public class MemberRoleCotrollor{
 	private MemberRoleRepository memberRoleRepository;
     
     @ApiOperation(value="数据插入", notes="创建member_role数据",response = MemberRole.class, tags = { "member.role",})
-    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> save(
 			@ApiParam(value = "member_role数据", required = true) @RequestBody MemberRole memberRole) {
     	memberRoleService.save(memberRole);
@@ -39,7 +39,7 @@ public class MemberRoleCotrollor{
 	}
     
     @ApiOperation(value="数据删除", notes="删除member_role数据",response = MemberRole.class, tags = { "member.role",})
-    @RequestMapping(value="/delete/{memberRoleCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/delete/{memberRoleCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> delete(
 			@ApiParam(value = "member_role数据code", required = true) @PathVariable String memberRoleCode) {
 		MemberRole oldMemberRole = memberRoleRepository.findByMemberRoleCode(memberRoleCode);
@@ -48,7 +48,7 @@ public class MemberRoleCotrollor{
 	}
     
     @ApiOperation(value="数据更新", notes="更新member_role数据",response = MemberRole.class, tags = { "member.role",})
-    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> update(
 			@ApiParam(value = "member_role数据", required = true) @RequestBody MemberRole memberRole) {
 		memberRoleService.update(memberRole);
@@ -56,7 +56,7 @@ public class MemberRoleCotrollor{
 	}
 	
     @ApiOperation(value="数据查询", notes="查询member_role数据",response = MemberRole.class, tags = { "member.role",})
-    @RequestMapping(value="/queryByCode/{memberRoleCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/queryByCode/{memberRoleCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "member_role数据code", required = true) @PathVariable String memberRoleCode) {
 		memberRoleRepository.findByMemberRoleCode(memberRoleCode);

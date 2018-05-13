@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Login Page</title>
+  <meta charset="utf-8">
+  <title>Login-Page</title>
+  <link rel="stylesheet" href="layui/css/layui.css">
+  <style type="text/css">
+  *{
+    box-sizing:border-box;
+    margin:0px;
+    padding:0px;
+  }
+  html,body{
+  	height:100%;
+  }
+  .container{
+  	height:100%;
+  	width:100%;
+  	margin:0px;
+  	padding:0px;
+  	background-image:url(img/login.jpg);
+  	background-size:100% 100%;
+  }
+  .login-label{
+  	color:#E0E0E0;
+  	text-align:position;
+  	margin-bottom:15px;
+  	text-align:center;
+  }
+  .layui-input-block{
+  	margin-left:0px;
+  }
+  .submit-btn{
+  	width:100%;
+  }
+  .login{
+  	background-color:#c2c2c2;
+  	height: 260px;
+    width: 260px;
+    position:absolute; 
+    top:50%; 
+    left:50%;
+    margin-top:-130px;
+    margin-left:-130px;
+    padding:20px;
+    background-color: rgba(0,0,0,0.5);/*设置登陆窗半透明*/
+  }
+  </style>
 </head>
 <body>
-login
+
+<div class="container layui-container">
+	<div class="login">
+		<h1 class="login-label">后台管理登陆</h1>
+		<form class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-input-block"><input class="layui-input" type="text" placeholder="请输入账号"></div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block"><input class="layui-input" type="password" placeholder="请输入密码"></div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block"><button class="layui-btn submit-btn">立即提交</button></div>
+			</div>
+		</form>
+	</div>
+</div> 
+
+<script src="layui/layui.js"></script>
+<script></script> 
 </body>
 </html>

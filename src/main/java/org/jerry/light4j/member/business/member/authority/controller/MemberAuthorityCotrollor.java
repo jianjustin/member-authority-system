@@ -31,7 +31,7 @@ public class MemberAuthorityCotrollor{
 	private MemberAuthorityRepository memberAuthorityRepository;
     
     @ApiOperation(value="数据插入", notes="创建member_authority数据",response = MemberAuthority.class, tags = { "member.authority",})
-    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> save(
 			@ApiParam(value = "member_authority数据", required = true) @RequestBody MemberAuthority memberAuthority) {
     	memberAuthorityService.save(memberAuthority);
@@ -39,7 +39,7 @@ public class MemberAuthorityCotrollor{
 	}
     
     @ApiOperation(value="数据删除", notes="删除member_authority数据",response = MemberAuthority.class, tags = { "member.authority",})
-    @RequestMapping(value="/delete/{memberAuthorityCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/delete/{memberAuthorityCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> delete(
 			@ApiParam(value = "member_authority数据code", required = true) @PathVariable String memberAuthorityCode) {
 		MemberAuthority oldMemberAuthority = memberAuthorityRepository.findByMemberAuthorityCode(memberAuthorityCode);
@@ -48,7 +48,7 @@ public class MemberAuthorityCotrollor{
 	}
     
     @ApiOperation(value="数据更新", notes="更新member_authority数据",response = MemberAuthority.class, tags = { "member.authority",})
-    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> update(
 			@ApiParam(value = "member_authority数据", required = true) @RequestBody MemberAuthority memberAuthority) {
 		memberAuthorityService.update(memberAuthority);
@@ -56,7 +56,7 @@ public class MemberAuthorityCotrollor{
 	}
 	
     @ApiOperation(value="数据查询", notes="查询member_authority数据",response = MemberAuthority.class, tags = { "member.authority",})
-    @RequestMapping(value="/queryByCode/{memberAuthorityCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/queryByCode/{memberAuthorityCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "member_authority数据code", required = true) @PathVariable String memberAuthorityCode) {
 		memberAuthorityRepository.findByMemberAuthorityCode(memberAuthorityCode);

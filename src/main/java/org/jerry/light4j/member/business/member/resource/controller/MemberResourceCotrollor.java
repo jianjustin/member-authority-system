@@ -31,7 +31,7 @@ public class MemberResourceCotrollor{
 	private MemberResourceRepository memberResourceRepository;
     
     @ApiOperation(value="数据插入", notes="创建member_resource数据",response = MemberResource.class, tags = { "member.resource",})
-    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> save(
 			@ApiParam(value = "member_resource数据", required = true) @RequestBody MemberResource memberResource) {
     	memberResourceService.save(memberResource);
@@ -39,7 +39,7 @@ public class MemberResourceCotrollor{
 	}
     
     @ApiOperation(value="数据删除", notes="删除member_resource数据",response = MemberResource.class, tags = { "member.resource",})
-    @RequestMapping(value="/delete/{memberResourceCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/delete/{memberResourceCode}", method=RequestMethod.DELETE, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> delete(
 			@ApiParam(value = "member_resource数据code", required = true) @PathVariable String memberResourceCode) {
 		MemberResource oldMemberResource = memberResourceRepository.findByMemberResourceCode(memberResourceCode);
@@ -48,7 +48,7 @@ public class MemberResourceCotrollor{
 	}
     
     @ApiOperation(value="数据更新", notes="更新member_resource数据",response = MemberResource.class, tags = { "member.resource",})
-    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> update(
 			@ApiParam(value = "member_resource数据", required = true) @RequestBody MemberResource memberResource) {
 		memberResourceService.update(memberResource);
@@ -56,7 +56,7 @@ public class MemberResourceCotrollor{
 	}
 	
     @ApiOperation(value="数据查询", notes="查询member_resource数据",response = MemberResource.class, tags = { "member.resource",})
-    @RequestMapping(value="/queryByCode/{memberResourceCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
+    @RequestMapping(value="/queryByCode/{memberResourceCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "member_resource数据code", required = true) @PathVariable String memberResourceCode) {
 		memberResourceRepository.findByMemberResourceCode(memberResourceCode);

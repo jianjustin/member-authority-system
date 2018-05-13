@@ -20,7 +20,7 @@ public class MemberUser{
     *自增列
     */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PK_ID",columnDefinition = "bigint")
     private Long pkId;
     /**

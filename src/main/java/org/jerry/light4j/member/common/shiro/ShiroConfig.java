@@ -1,5 +1,4 @@
 /*package org.jerry.light4j.member.common.shiro;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,31 +9,37 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ShiroConfig {
-	
 	@Bean
-	public ShiroFilterFactoryBean shiroFilterFactoryBean(org.apache.shiro.mgt.SecurityManager securityManager) {
+	public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager securityManager) {
+		System.out.println("ShiroConfiguration.shirFilter()");
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-		//以下是过滤链，按顺序过滤，所以/**需要放最后
-		//开放的静态资源
-		filterChainDefinitionMap.put("/favicon.ico", "anon");//网站图标
+		Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
+		filterChainDefinitionMap.put("/static/**", "anon");// 配置不会被拦截的链接 顺序判断
+		filterChainDefinitionMap.put("/layui/**", "anon");// 配置不会被拦截的链接 顺序判断
+		filterChainDefinitionMap.put("/img/**", "anon");// 配置不会被拦截的链接 顺序判断
+		filterChainDefinitionMap.put("/swagger/**", "anon");
+		filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+		filterChainDefinitionMap.put("/logout", "logout");
 		filterChainDefinitionMap.put("/**", "authc");
+		shiroFilterFactoryBean.setLoginUrl("/login");// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+		shiroFilterFactoryBean.setSuccessUrl("/index");// 登录成功后要跳转的链接
+		shiroFilterFactoryBean.setUnauthorizedUrl("/403");//未授权界面;
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
 
-
 	@Bean
-	public DefaultWebSecurityManager securityManager() {
-		DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager(myRealm());
-		return defaultWebSecurityManager;
+	public MyShiroRealm myShiroRealm(){
+		MyShiroRealm myShiroRealm = new MyShiroRealm();
+		return myShiroRealm;
 	}
 
+
 	@Bean
-	public MyRealm myRealm() {
-		MyRealm myRealm = new MyRealm();
-		return myRealm;
+	public DefaultWebSecurityManager securityManager(){
+		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
+		securityManager.setRealm(myShiroRealm());
+		return securityManager;
 	}
-}
-*/
+}*/
