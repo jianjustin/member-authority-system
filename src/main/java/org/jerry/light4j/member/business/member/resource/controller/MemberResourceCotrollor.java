@@ -56,7 +56,7 @@ public class MemberResourceCotrollor{
 	}
 	
     @ApiOperation(value="数据查询", notes="查询member_resource数据",response = MemberResource.class, tags = { "member.resource",})
-    @RequestMapping(value="/queryByCode/{memberResourceCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
+    @RequestMapping(value="/queryByCode/{memberResourceCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "member_resource数据code", required = true) @PathVariable String memberResourceCode) {
 		memberResourceRepository.findByMemberResourceCode(memberResourceCode);
