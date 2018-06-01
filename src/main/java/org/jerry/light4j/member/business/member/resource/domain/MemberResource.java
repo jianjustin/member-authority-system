@@ -21,13 +21,18 @@ public class MemberResource{
     */
 	@Id
     @Column(name = "PK_ID",columnDefinition = "bigint")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pkId;
     /**
     *资源编号
     */
     @Column(name = "MEMBER_RESOURCE_CODE",columnDefinition = "varchar")
     private String memberResourceCode;
+    /**
+     *资源编号
+     */
+     @Column(name = "MEMBER_RESOURCE_PARENT_CODE",columnDefinition = "varchar")
+     private String memberResourceParentCode;
     /**
     *资源名称
     */
@@ -65,40 +70,41 @@ public class MemberResource{
     public void setmemberResourceCode(String memberResourceCode) {
         this.memberResourceCode = memberResourceCode;
     }
-	
     public String getmemberResourceName() {
         return this.memberResourceName;
     }
     public void setmemberResourceName(String memberResourceName) {
         this.memberResourceName = memberResourceName;
     }
-	
     public String getmemberResourceType() {
         return this.memberResourceType;
     }
     public void setmemberResourceType(String memberResourceType) {
         this.memberResourceType = memberResourceType;
     }
-	
     public String getmemberResourceRouter() {
         return this.memberResourceRouter;
     }
     public void setmemberResourceRouter(String memberResourceRouter) {
         this.memberResourceRouter = memberResourceRouter;
     }
-	
     public String getmemberResourceRemark() {
         return this.memberResourceRemark;
     }
     public void setmemberResourceRemark(String memberResourceRemark) {
         this.memberResourceRemark = memberResourceRemark;
     }
-	
     public String getmemberResourceOrderBy() {
         return this.memberResourceOrderBy;
     }
     public void setmemberResourceOrderBy(String memberResourceOrderBy) {
         this.memberResourceOrderBy = memberResourceOrderBy;
     }
+	public String getMemberResourceParentCode() {
+		return memberResourceParentCode;
+	}
+	public void setMemberResourceParentCode(String memberResourceParentCode) {
+		this.memberResourceParentCode = memberResourceParentCode;
+	}
 	
 }

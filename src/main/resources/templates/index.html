@@ -1,10 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>manage-page</title>
+	<link rel="stylesheet" href="layui/css/layui.css">
+	<script src="layui/layui.js"></script>
+	<style type="text/css">
+	*{
+   		box-sizing:border-box;
+   		margin:0px;
+   		padding:0px;
+	 }
+	 html,body,.container{
+   	 	height:100%;
+   	 	margin:0px;
+     	padding:0px;
+	 } 
+	 .container,.index-header,.index-body{
+		width:100%;
+	 }
+	 .index-body{
+	 	position:absolute;
+	 	top:60px;
+	 	bottom:0px;
+	 }
+	 .index-header{
+	 	height:60px;
+	 	background-color:#23262E;
+	 }
+	 .index-menu{
+	 	background-color:#393d49;
+	 	height:100%;
+	 	width:200px;
+	 	float:left;
+	 }
+	 .index-main{
+	 	background-color:#ffffff;
+	 	height:100%;
+	 	overflow:hidden;
+	 }
+	 .index-header-title{
+    	left: 0px;
+	    top: 0px;
+	    width: 200px;
+	    height: 100%;
+	    line-height: 60px;
+	    text-align: center;
+	    color: #009688;
+	    font-size: 16px;
+	    float:left;
+	 }	  
+	</style>
+	<script type="text/javascript">
+		layui.use('element', function(){
+			var element = layui.element;	
+		});
+	</script>
 </head>
+
+
 <body>
-this is world
+	<div class="container layui-container">
+		<div class="index-header">
+			<div class="index-header-title">管理面板</div>
+			<div class="layui-layout-right index-header-right">
+				<ul class="layui-nav index-header-right-nav">
+				  <li class="layui-nav-item"><a href="">退出</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="index-body">
+			<div class="index-menu">
+				<ul class="layui-nav layui-nav-tree index-menu-tree">
+				  <li class="layui-nav-item layui-nav-itemed">
+				    <a href="javascript:showOrhide(this);">角色管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;">角色管理</a></dd>
+				      <dd><a href="javascript:;">权限配置</a></dd>
+				    </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				    <a href="javascript:;">用户管理</a>
+				  </li>
+				  <li class="layui-nav-item"><a href="">资源管理</a></li>
+				  <li class="layui-nav-item"><a href="">配置管理</a></li>
+				  <li class="layui-nav-item"><a href="">系统设置</a></li>
+				</ul>
+			</div>
+			<div class="index-main"></div>
+		</div>
+	</div>
 </body>
 </html>
