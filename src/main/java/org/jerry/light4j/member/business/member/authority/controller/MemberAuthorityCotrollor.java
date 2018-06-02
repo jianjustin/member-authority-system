@@ -1,11 +1,22 @@
 package org.jerry.light4j.member.business.member.authority.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.jerry.light4j.member.business.member.authority.domain.MemberAuthority;
+import org.jerry.light4j.member.business.member.authority.domain.MemberAuthorityView;
 import org.jerry.light4j.member.business.member.authority.repository.MemberAuthorityRepository;
 import org.jerry.light4j.member.business.member.authority.service.MemberAuthorityService;
+import org.jerry.light4j.member.business.member.user.domain.MemberUser;
+import org.jerry.light4j.member.business.member.user.domain.MemberUserView;
 import org.jerry.light4j.member.common.base.repository.impl.BaseQueryRepositoryImpl;
+import org.jerry.light4j.member.common.page.PageQueryBean;
+import org.jerry.light4j.member.common.page.PageTools;
+import org.jerry.light4j.member.common.page.PageUtils;
+import org.jerry.light4j.member.common.response.ResponseDomain;
+import org.jerry.light4j.member.common.response.ResponseManager;
+import org.jerry.light4j.member.common.sql.SqlUtils;
+import org.jerry.light4j.member.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +72,39 @@ public class MemberAuthorityCotrollor{
 			@ApiParam(value = "member_authority数据code", required = true) @PathVariable String memberAuthorityCode) {
 		memberAuthorityRepository.findByMemberAuthorityCode(memberAuthorityCode);
 		return new ResponseEntity<MemberAuthority>(HttpStatus.OK);
+	}
+    
+    @ApiOperation(value="数据分页查询", notes="查询member_authority数据",response = ResponseDomain.class, tags = { "member.authority",})
+    @RequestMapping(value="/queryByPage", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json; charset=UTF-8"})
+    public ResponseEntity<?> queryByPage(
+			@ApiParam(value = "member_authority查询条件") @RequestBody MemberAuthorityView memberAuthorityView) {
+    	/*1. 数据校验*/
+    	if(StringUtils.isBlank(memberAuthorityView.getPageQueryBean()))memberAuthorityView.setPageQueryBean(new PageQueryBean());
+    	if(StringUtils.isBlank(memberAuthorityView.getPageQueryBean().getPageNo()))memberAuthorityView.getPageQueryBean().setPageNo(1);
+    	if(StringUtils.isBlank(memberAuthorityView.getPageQueryBean().getPageSize()))memberAuthorityView.getPageQueryBean().setPageSize(10);
+    	/*2. SQL组装*/
+    	String sql = SqlUtils.getInitSql("MemberAuthority");
+    	/*3. 数据查询*/
+    	List<MemberAuthority> list = baseQueryRepositoryImpl.queryByPageByJPQL(sql, SqlUtils.createParamValueList(), MemberAuthority.class, memberAuthorityView.getPageQueryBean().getPageNo(), memberAuthorityView.getPageQueryBean().getPageSize());
+    	/*4. 数据总量查询*/
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,  SqlUtils.createParamValueList(), MemberAuthority.class);
+		/*5. 封装返回信息*/
+    	PageTools pageTools = PageUtils.buildPageTools(memberAuthorityView.getPageQueryBean(), "memberResource.queryByPage",count);
+		return ResponseManager.handerResponse(MemberAuthority.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
+	}
+    
+    @ApiOperation(value="数据查询所有", notes="查询member_user数据",response = ResponseDomain.class, tags = { "member.user",})
+    @RequestMapping(value="/queryAll", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json; charset=UTF-8"})
+    public ResponseEntity<?> queryAll(
+			@ApiParam(value = "member_user查询条件") @RequestBody MemberAuthorityView memberAuthorityView) {
+    	String sql = SqlUtils.getInitSql("MemberUser");
+    	/*3. 数据查询*/
+    	List<MemberAuthority> list = baseQueryRepositoryImpl.queryAllByJPQL(sql,  SqlUtils.createParamValueList(), MemberAuthority.class);
+    	/*4. 数据总量查询*/
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,SqlUtils.createParamValueList(), MemberAuthority.class);
+		/*5. 封装返回信息*/
+    	PageTools pageTools = PageUtils.buildPageTools(memberAuthorityView.getPageQueryBean(), "memberResource.queryByPage",count);
+		return ResponseManager.handerResponse(MemberAuthority.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
 	}
     
 	public MemberAuthorityService getMemberAuthorityService() {

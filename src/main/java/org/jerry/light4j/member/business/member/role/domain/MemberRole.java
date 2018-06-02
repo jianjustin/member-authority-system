@@ -43,26 +43,37 @@ public class MemberRole{
     */
     @Column(name = "MEMBER_ROLE_ORDER_BY",columnDefinition = "varchar")
     private String memberRoleOrderBy;
+	public Long getPkId() {
+		return pkId;
+	}
+	public void setPkId(Long pkId) {
+		this.pkId = pkId;
+	}
+	public String getMemberRoleCode() {
+		return memberRoleCode;
+	}
+	public void setMemberRoleCode(String memberRoleCode) {
+		this.memberRoleCode = memberRoleCode;
+	}
+	public String getMemberRoleName() {
+		return memberRoleName;
+	}
+	public void setMemberRoleName(String memberRoleName) {
+		this.memberRoleName = memberRoleName;
+	}
+	public Date getMemberRoleCreateDate() {
+		return memberRoleCreateDate;
+	}
+	public void setMemberRoleCreateDate(Date memberRoleCreateDate) {
+		this.memberRoleCreateDate = memberRoleCreateDate;
+	}
+	public String getMemberRoleOrderBy() {
+		return memberRoleOrderBy;
+	}
+	public void setMemberRoleOrderBy(String memberRoleOrderBy) {
+		this.memberRoleOrderBy = memberRoleOrderBy;
+	}
 
-    public String getmemberRoleCode() {
-        return this.memberRoleCode;
-    }
-    public void setmemberRoleCode(String memberRoleCode) {
-        this.memberRoleCode = memberRoleCode;
-    }
-	
-    public String getmemberRoleName() {
-        return this.memberRoleName;
-    }
-    public void setmemberRoleName(String memberRoleName) {
-        this.memberRoleName = memberRoleName;
-    }
-	
-    public String getmemberRoleOrderBy() {
-        return this.memberRoleOrderBy;
-    }
-    public void setmemberRoleOrderBy(String memberRoleOrderBy) {
-        this.memberRoleOrderBy = memberRoleOrderBy;
-    }
+    
 	
 }

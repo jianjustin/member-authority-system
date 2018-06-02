@@ -1,11 +1,25 @@
 package org.jerry.light4j.member.business.member.role.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.jerry.light4j.member.business.member.resource.domain.MemberResource;
+import org.jerry.light4j.member.business.member.resource.domain.MemberResourceView;
 import org.jerry.light4j.member.business.member.role.domain.MemberRole;
+import org.jerry.light4j.member.business.member.role.domain.MemberRoleView;
 import org.jerry.light4j.member.business.member.role.repository.MemberRoleRepository;
 import org.jerry.light4j.member.business.member.role.service.MemberRoleService;
+import org.jerry.light4j.member.business.member.user.domain.MemberUser;
 import org.jerry.light4j.member.common.base.repository.impl.BaseQueryRepositoryImpl;
+import org.jerry.light4j.member.common.code.CodeUtils;
+import org.jerry.light4j.member.common.page.PageQueryBean;
+import org.jerry.light4j.member.common.page.PageTools;
+import org.jerry.light4j.member.common.page.PageUtils;
+import org.jerry.light4j.member.common.response.ResponseDomain;
+import org.jerry.light4j.member.common.response.ResponseManager;
+import org.jerry.light4j.member.common.sql.SqlUtils;
+import org.jerry.light4j.member.common.utils.BeanUtils;
+import org.jerry.light4j.member.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +48,8 @@ public class MemberRoleCotrollor{
     @RequestMapping(value="/save", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> save(
 			@ApiParam(value = "member_role数据", required = true) @RequestBody MemberRole memberRole) {
+    	memberRole.setMemberRoleCode(CodeUtils.getCode(CodeUtils.queryMax(baseQueryRepositoryImpl, "memberRole", MemberRole.class)));
+    	memberRole.setMemberRoleCreateDate(CodeUtils.queryNow());
     	memberRoleService.save(memberRole);
 		return new ResponseEntity<MemberRole>(HttpStatus.OK);
 	}
@@ -51,16 +67,55 @@ public class MemberRoleCotrollor{
     @RequestMapping(value="/update", method=RequestMethod.PUT, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> update(
 			@ApiParam(value = "member_role数据", required = true) @RequestBody MemberRole memberRole) {
-		memberRoleService.update(memberRole);
+    	MemberRole oldMemberRole = memberRoleRepository.findByMemberRoleCode(memberRole.getMemberRoleCode());
+    	try {
+			BeanUtils.copyPropertiesOfNotNull(memberRole, oldMemberRole);
+			memberRoleService.update(oldMemberRole);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<MemberRole>(HttpStatus.OK);
 	}
 	
     @ApiOperation(value="数据查询", notes="查询member_role数据",response = MemberRole.class, tags = { "member.role",})
-    @RequestMapping(value="/queryByCode/{memberRoleCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
+    @RequestMapping(value="/queryByCode/{memberRoleCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "member_role数据code", required = true) @PathVariable String memberRoleCode) {
-		memberRoleRepository.findByMemberRoleCode(memberRoleCode);
-		return new ResponseEntity<MemberRole>(HttpStatus.OK);
+		MemberRole memberRole = memberRoleRepository.findByMemberRoleCode(memberRoleCode);
+		return ResponseManager.handerResponse(MemberRole.class,memberRole, null, HttpStatus.OK, "成功获取资源数据", null, null);
+	}
+    
+    @ApiOperation(value="数据分页查询", notes="查询member_role数据",response = ResponseDomain.class, tags = { "member.role",})
+    @RequestMapping(value="/queryByPage", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json; charset=UTF-8"})
+    public ResponseEntity<?> queryByPage(
+			@ApiParam(value = "member_role查询条件") @RequestBody MemberRoleView memberRoleView) {
+    	/*1. 数据校验*/
+    	if(StringUtils.isBlank(memberRoleView.getPageQueryBean()))memberRoleView.setPageQueryBean(new PageQueryBean());
+    	if(StringUtils.isBlank(memberRoleView.getPageQueryBean().getPageNo()))memberRoleView.getPageQueryBean().setPageNo(1);
+    	if(StringUtils.isBlank(memberRoleView.getPageQueryBean().getPageSize()))memberRoleView.getPageQueryBean().setPageSize(10);
+    	/*2. SQL组装*/
+    	String sql = SqlUtils.getInitSql("MemberRole");
+    	/*3. 数据查询*/
+    	List<MemberRole> list = baseQueryRepositoryImpl.queryByPageByJPQL(sql, SqlUtils.createParamValueList(), MemberRole.class, memberRoleView.getPageQueryBean().getPageNo(), memberRoleView.getPageQueryBean().getPageSize());
+    	/*4. 数据总量查询*/
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,  SqlUtils.createParamValueList(), MemberRole.class);
+		/*5. 封装返回信息*/
+    	PageTools pageTools = PageUtils.buildPageTools(memberRoleView.getPageQueryBean(), "memberResource.queryByPage",count);
+		return ResponseManager.handerResponse(MemberRole.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
+	}
+    
+    @ApiOperation(value="数据查询所有", notes="查询member_role数据",response = ResponseDomain.class, tags = { "member.role",})
+    @RequestMapping(value="/queryAll", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json; charset=UTF-8"})
+    public ResponseEntity<?> queryAll(
+			@ApiParam(value = "member_role查询条件") @RequestBody MemberRoleView memberRoleView) {
+    	String sql = SqlUtils.getInitSql("MemberRole");
+    	/*3. 数据查询*/
+    	List<MemberRole> list = baseQueryRepositoryImpl.queryAllByJPQL(sql,  SqlUtils.createParamValueList(), MemberRole.class);
+    	/*4. 数据总量查询*/
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,  SqlUtils.createParamValueList(), MemberRole.class);
+		/*5. 封装返回信息*/
+    	PageTools pageTools = PageUtils.buildPageTools(memberRoleView.getPageQueryBean(), "memberRole.queryAll",count);
+		return ResponseManager.handerResponse(MemberRole.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
 	}
     
 	public MemberRoleService getMemberRoleService() {

@@ -25,6 +25,7 @@
 		<mysql.version>5.1.44</mysql.version>
 		<springfox.version>2.5.0</springfox.version>
 		<springloaded.version>1.2.6.RELEASE</springloaded.version>
+		<beanUtils.version>1.9.3</beanUtils.version>
 	</properties>
 
 	<dependencies>
@@ -80,6 +81,12 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-devtools</artifactId>
 		    <optional>true</optional>
+		</dependency>
+		<!-- bean操作集合 -->
+		<dependency>
+		  <groupId>commons-beanutils</groupId>
+		  <artifactId>commons-beanutils</artifactId>
+		  <version>${beanUtils.version}</version>
 		</dependency>
 	</dependencies>
 
