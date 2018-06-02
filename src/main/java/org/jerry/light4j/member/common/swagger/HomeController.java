@@ -1,11 +1,8 @@
 package org.jerry.light4j.member.common.swagger;
 
-import org.jerry.light4j.member.business.member.user.domain.MemberUser;
 import org.jerry.light4j.member.business.member.user.repository.MemberUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -34,6 +31,11 @@ public class HomeController {
 	@RequestMapping(value = "/login",method=RequestMethod.GET)
 	public String login() {
 		return "login";
+	}
+	
+	@RequestMapping(value = "/resourceList",method=RequestMethod.GET)
+	public String resourceList() {
+		return "member/resourceList";
 	}
 	
    
