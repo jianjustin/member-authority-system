@@ -38,7 +38,6 @@ public class ResponseManager {
 	 * @return
 	 */
 	public static <T> ResponseEntity<ResponseDomain<T>> handerResponse(Class<T> clazz,T domain,List<T> domainList,HttpStatus status,String msg,Map<String,Object> dataMap,PageTools pageTools){
-		ResponseEntity<ResponseDomain<T>> responseEntity = new ResponseEntity<ResponseDomain<T>>(status);
 		ResponseDomain<T> responseDomain = new ResponseDomain<T>();
 		responseDomain.setDataMap(dataMap);
 		responseDomain.setDomain(domain);
@@ -46,7 +45,7 @@ public class ResponseManager {
 		responseDomain.setPageTools(pageTools);
 		responseDomain.setStatus(status.toString());//需要手动去设置状态码参数
 		responseDomain.setDomainList(domainList);
-		responseEntity.ok(responseDomain);
+		ResponseEntity<ResponseDomain<T>> responseEntity = new ResponseEntity<ResponseDomain<T>>(responseDomain,status);
 		return responseEntity;
 	}
 

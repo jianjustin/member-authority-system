@@ -33,7 +33,7 @@ public class UserSession {
 	private void putResourceMap(){
 		memberResourceMap.clear();
 		for (MemberResource memberResource : memberResources) {
-			memberResourceMap.put(memberResource.getmemberResourceRouter(), memberResource);
+			memberResourceMap.put(memberResource.getMemberResourceRouter(), memberResource);
 		}
 	}
 	

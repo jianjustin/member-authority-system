@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>manage-page</title>
+	<link rel="stylesheet" href="layui/css/layui.css">
+	<script src="layui/layui.js"></script>
+	<style type="text/css">
+	*{
+   		box-sizing:border-box;
+   		margin:0px;
+   		padding:0px;
+	 }
+	 html,body,.container{
+   	 	height:100%;
+   	 	margin:0px;
+     	padding:0px;
+	 } 
+	 .container,.index-header,.index-body{
+		width:100%;
+	 }
+	 .index-body{
+	 	position:absolute;
+	 	top:60px;
+	 	bottom:0px;
+	 }
+	 .index-header{
+	 	height:60px;
+	 	background-color:#23262E;
+	 }
+	 .index-menu{
+	 	background-color:#393d49;
+	 	height:100%;
+	 	width:200px;
+	 	float:left;
+	 }
+	 .index-main{
+	 	background-color:#ffffff;
+	 	height:100%;
+	 	overflow:hidden;
+	 }
+	 .index-header-title{
+    	left: 0px;
+	    top: 0px;
+	    width: 200px;
+	    height: 100%;
+	    line-height: 60px;
+	    text-align: center;
+	    color: #009688;
+	    font-size: 16px;
+	    float:left;
+	 }	  
+	</style>
+	<script type="text/javascript">
+		layui.use('element', function(){
+			var element = layui.element;	
+		});
+		layui.use('table', function(){
+		  var table = layui.table;
+		  
+		  //第一个实例
+		  table.render({
+		    elem: '#demo',
+		    height: 315,
+		    url: '/demo/table/user/',
+		    page: true,
+		    cols: [
+		    		[
+				      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+				      ,{field: 'username', title: '用户名', width:80}
+				      ,{field: 'sex', title: '性别', width:80, sort: true}
+				      ,{field: 'city', title: '城市', width:80} 
+				      ,{field: 'sign', title: '签名', width: 177}
+				      ,{field: 'experience', title: '积分', width: 80, sort: true}
+				      ,{field: 'score', title: '评分', width: 80, sort: true}
+				      ,{field: 'classify', title: '职业', width: 80}
+				      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+		    		]
+		    ]
+		  });
+		});
+	</script>
+</head>
+
+
+<body>
+	<div class="container layui-container">
+		<div class="index-header">
+			<div class="index-header-title">管理面板</div>
+			<div class="layui-layout-right index-header-right">
+				<ul class="layui-nav index-header-right-nav">
+				  <li class="layui-nav-item"><a href="">退出</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="index-body">
+			<div class="index-menu">
+				<ul class="layui-nav layui-nav-tree index-menu-tree">
+				  <li class="layui-nav-item layui-nav-itemed">
+				    <a href="javascript:showOrhide(this);">角色管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;">角色管理</a></dd>
+				      <dd><a href="javascript:;">权限配置</a></dd>
+				    </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				    <a href="javascript:;">用户管理</a>
+				  </li>
+				  <li class="layui-nav-item"><a href="">资源管理</a></li>
+				  <li class="layui-nav-item"><a href="">配置管理</a></li>
+				  <li class="layui-nav-item"><a href="">系统设置</a></li>
+				</ul>
+			</div>
+			<div class="index-main">
+				<table id="demo" lay-filter="test"></table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -14,6 +14,7 @@ import org.jerry.light4j.member.common.page.PageTools;
 import org.jerry.light4j.member.common.page.PageUtils;
 import org.jerry.light4j.member.common.response.ResponseDomain;
 import org.jerry.light4j.member.common.response.ResponseManager;
+import org.jerry.light4j.member.common.sql.SqlUtils;
 import org.jerry.light4j.member.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,10 +82,11 @@ public class MemberResourceCotrollor{
     	if(StringUtils.isBlank(memberResourceView.getPageQueryBean().getPageNo()))memberResourceView.getPageQueryBean().setPageNo(1);
     	if(StringUtils.isBlank(memberResourceView.getPageQueryBean().getPageSize()))memberResourceView.getPageQueryBean().setPageSize(10);
     	/*2. SQL组装*/
+    	String sql = SqlUtils.getInitSql("MemberResource");
     	/*3. 数据查询*/
-    	List<MemberResource> list = baseQueryRepositoryImpl.queryByPageByJPQL("select t from MemberResource t where 1=1", new ArrayList<Object>(), MemberResource.class, memberResourceView.getPageQueryBean().getPageNo(), memberResourceView.getPageQueryBean().getPageSize());
+    	List<MemberResource> list = baseQueryRepositoryImpl.queryByPageByJPQL(sql, SqlUtils.createParamValueList(), MemberResource.class, memberResourceView.getPageQueryBean().getPageNo(), memberResourceView.getPageQueryBean().getPageSize());
     	/*4. 数据总量查询*/
-    	int count = baseQueryRepositoryImpl.queryCountByJPQL("select t from MemberResource t where 1=1", new ArrayList<Object>(), MemberResource.class);
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,  SqlUtils.createParamValueList(), MemberResource.class);
 		/*5. 封装返回信息*/
     	PageTools pageTools = PageUtils.buildPageTools(memberResourceView.getPageQueryBean(), "memberResource.queryByPage",count);
 		return ResponseManager.handerResponse(MemberResource.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
@@ -96,10 +98,11 @@ public class MemberResourceCotrollor{
 			@ApiParam(value = "member_resource查询条件") @RequestBody MemberResourceView memberResourceView) {
     	/*1. 数据校验*/
     	/*2. SQL组装*/
+    	String sql = SqlUtils.getInitSql("MemberResource");
     	/*3. 数据查询*/
-    	List<MemberResource> list = baseQueryRepositoryImpl.queryAllByJPQL("select t from MemberResource t where 1=1", new ArrayList<Object>(), MemberResource.class);
+    	List<MemberResource> list = baseQueryRepositoryImpl.queryAllByJPQL(sql,  SqlUtils.createParamValueList(), MemberResource.class);
     	/*4. 数据总量查询*/
-    	int count = baseQueryRepositoryImpl.queryCountByJPQL("select t from MemberResource t where 1=1", new ArrayList<Object>(), MemberResource.class);
+    	int count = baseQueryRepositoryImpl.queryCountByJPQL(sql,  SqlUtils.createParamValueList(), MemberResource.class);
 		/*5. 封装返回信息*/
     	PageTools pageTools = PageUtils.buildPageTools(memberResourceView.getPageQueryBean(), "memberResource.queryByPage",count);
 		return ResponseManager.handerResponse(MemberResource.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
