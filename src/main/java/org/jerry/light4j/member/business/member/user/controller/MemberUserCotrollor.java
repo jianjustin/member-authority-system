@@ -1,7 +1,9 @@
 package org.jerry.light4j.member.business.member.user.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jerry.light4j.member.business.member.user.domain.MemberUser;
@@ -82,9 +84,10 @@ public class MemberUserCotrollor{
     @RequestMapping(value="/queryByCode/{memberUserCode}", method=RequestMethod.GET, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/*"})
     public ResponseEntity<?> queryByCode(
 			@ApiParam(value = "实体数据", required = true) @PathVariable String memberUserCode) {
-		MemberUser memberUser = memberUserRepository.findByMemberUserCode(memberUserCode);
+		//MemberUser memberUser = memberUserRepository.findByMemberUserCode(memberUserCode);
 		Map<String,Object> datas = new HashMap<String,Object>();
-		datas.put("data", memberUser);
+		List<MemberUser> list = baseQueryRepositoryImpl.queryAllByJPQL("select t from MemberUser t where 1=1", new ArrayList<Object>(), MemberUser.class);
+    	datas.put("data", list.get(0));
 		return ResponseManager.getResponse(HttpStatus.OK, null, datas);
 	}
     

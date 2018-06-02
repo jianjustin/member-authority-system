@@ -5,7 +5,7 @@ import org.jerry.light4j.member.common.page.PageQueryBean;
 import org.jerry.light4j.member.common.page.PageTools;
 
 /**
-* 描述：视图层实体
+* 描述：视图层实体数据封装
 * @author tools
 */
 public class MemberResourceView extends MemberResource{
