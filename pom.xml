@@ -22,6 +22,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<mysql.version>5.1.44</mysql.version>
+		<springfox.version>2.5.0</springfox.version>
+		<springloaded.version>1.2.6.RELEASE</springloaded.version>
 	</properties>
 
 	<dependencies>
@@ -48,7 +51,7 @@
 		<dependency>
 	      <groupId>mysql</groupId>
 	      <artifactId>mysql-connector-java</artifactId>
-	      <version>5.1.44</version>
+	      <version>${mysql.version}</version>
 	    </dependency>
 	    <!-- 权限验证框架 -->
 	    <!-- <dependency>
@@ -65,12 +68,18 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.5.0</version>
+			<version>${springfox.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.5.0</version>
+			<version>${springfox.version}</version>
+		</dependency>
+		<!-- 项目热部署配置 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-devtools</artifactId>
+		    <optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -79,9 +88,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+			        <dependency>
+			        	<!-- springfox热部署配置 -->
+			            <groupId>org.springframework</groupId>
+			            <artifactId>springloaded</artifactId>
+			            <version>${springloaded.version}</version>
+			        </dependency>
+			    </dependencies>
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
