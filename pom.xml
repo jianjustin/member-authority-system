@@ -26,6 +26,7 @@
 		<springfox.version>2.5.0</springfox.version>
 		<springloaded.version>1.2.6.RELEASE</springloaded.version>
 		<beanUtils.version>1.9.3</beanUtils.version>
+		<activiti.version>6.0.0</activiti.version>
 	</properties>
 
 	<dependencies>
@@ -33,6 +34,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+		<!-- 工作流引擎activiti配置 -->
+		<dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
 		<!-- 添加视图层和启动容器配置 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
