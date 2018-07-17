@@ -1,13 +1,10 @@
 package org.jerry.light4j.member.business.member.user.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jerry.light4j.member.business.member.resource.domain.MemberResource;
-import org.jerry.light4j.member.business.member.resource.domain.MemberResourceView;
 import org.jerry.light4j.member.business.member.user.domain.MemberUser;
 import org.jerry.light4j.member.business.member.user.domain.MemberUserView;
 import org.jerry.light4j.member.business.member.user.repository.MemberUserRepository;
@@ -62,6 +59,14 @@ public class MemberUserCotrollor{
     		resultMap.put("data", oldMemberUser);
     		responseEntity = ResponseManager.getResponse(HttpStatus.OK, null, resultMap);
     	}
+		return responseEntity;
+	}
+    
+    @ApiOperation(value="用户注册", notes="用户注册",response = MemberUser.class, tags = { "member.user",})
+    @RequestMapping(value="/register", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
+	public ResponseEntity<?> register(
+			@ApiParam(value = "用户数据", required = true) @RequestBody MemberUser memberUser) {
+    	/*校验用户*/
 		return responseEntity;
 	}
     

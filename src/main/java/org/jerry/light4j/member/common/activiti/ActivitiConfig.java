@@ -1,4 +1,4 @@
-package org.jerry.light4j.member.common.activiti;
+/*package org.jerry.light4j.member.common.activiti;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-/**
+*//**
  * 配置activiti工作流引擎
  * @author jian
  *
- */
+ *//*
 @Configuration
 public class ActivitiConfig {
 
@@ -47,3 +47,4 @@ public class ActivitiConfig {
 		this.dataSource = dataSource;
 	}
 }
+*/
