@@ -1,6 +1,7 @@
 package org.jerry.light4j.member.business.member.user.controller;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +11,16 @@ import org.jerry.light4j.member.business.member.user.domain.MemberUserView;
 import org.jerry.light4j.member.business.member.user.repository.MemberUserRepository;
 import org.jerry.light4j.member.business.member.user.service.MemberUserService;
 import org.jerry.light4j.member.common.base.repository.impl.BaseQueryRepositoryImpl;
+import org.jerry.light4j.member.common.cache.MemCacheManager;
 import org.jerry.light4j.member.common.code.CodeUtils;
 import org.jerry.light4j.member.common.page.PageQueryBean;
 import org.jerry.light4j.member.common.page.PageTools;
 import org.jerry.light4j.member.common.page.PageUtils;
 import org.jerry.light4j.member.common.response.ResponseDomain;
 import org.jerry.light4j.member.common.response.ResponseManager;
+import org.jerry.light4j.member.common.session.UserSession;
 import org.jerry.light4j.member.common.sql.SqlUtils;
+import org.jerry.light4j.member.common.utils.MD5Utils;
 import org.jerry.light4j.member.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,17 +51,27 @@ public class MemberUserCotrollor{
     @ApiOperation(value="用户登陆", notes="用户登陆",response = MemberUser.class, tags = { "member.user",})
     @RequestMapping(value="/login", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> login(
+			@ApiParam(value = "实体数据", required = true) @PathVariable String client_id,
 			@ApiParam(value = "用户数据", required = true) @RequestBody MemberUser memberUser) {
-    	/*TODO 做加密操作*/
     	MemberUser oldMemberUser = memberUserRepository.findByMemberUserLoginAccountAndMemberUserLoginPassword(memberUser.getMemberUserLoginAccount(), memberUser.getMemberUserLoginPassword());
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	if(null == oldMemberUser){
-    		resultMap.put("msg", "用户不存在或密码错误");
-    		responseEntity = ResponseManager.getResponse(HttpStatus.EXPECTATION_FAILED, null, resultMap);
+    		ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户登陆失败", null, null);
     	}else{
-    		resultMap.put("msg", "登陆成功");
-    		resultMap.put("data", oldMemberUser);
-    		responseEntity = ResponseManager.getResponse(HttpStatus.OK, null, resultMap);
+    		if(!client_id.equals(oldMemberUser.getMemberUserToken_Id())){
+    			ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户client_id异常,请联系管理员", null, null);
+    		}else{
+    			/*token创建(时间戳+client_id)*/
+    			Date date = new Date();
+    			String tokenid = MD5Utils.crypt(client_id + date.toString());
+        		/*用户会话创建*/
+    			Map<String,Object> dataMap = new HashMap<String, Object>();
+    			UserSession userSession = new UserSession();
+    			userSession.setTokenid(tokenid);
+    			dataMap.put("MemberUser", oldMemberUser);
+    			dataMap.put("UserSession", userSession);
+    			MemCacheManager.push(tokenid, dataMap);
+    		}
     	}
 		return responseEntity;
 	}
@@ -66,8 +80,14 @@ public class MemberUserCotrollor{
     @RequestMapping(value="/register", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json"})
 	public ResponseEntity<?> register(
 			@ApiParam(value = "用户数据", required = true) @RequestBody MemberUser memberUser) {
-    	/*校验用户*/
-		return responseEntity;
+    	/*校验用户数据*/
+    	if(StringUtils.isBlank(memberUser.getMemberUserLoginAccount()))
+    		ResponseManager.handerResponse(MemberUser.class,null, null, HttpStatus.OK, "用户账号为空", null, null);
+    	if(StringUtils.isBlank(memberUser.getMemberUserLoginPassword()))
+    		ResponseManager.handerResponse(MemberUser.class,null, null, HttpStatus.OK, "用户密码为空", null, null);
+    	memberUser.setMemberUserCode(CodeUtils.getCode(CodeUtils.queryMax(baseQueryRepositoryImpl, "memberUser", MemberUser.class)));
+    	MemberUser oldMemberUser = memberUserService.save(memberUser);
+    	return ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户注册成功", null, null);
 	}
     
     @ApiOperation(value="数据插入", notes="创建用户数据",response = MemberUser.class, tags = { "member.user",})
