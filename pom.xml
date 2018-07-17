@@ -36,11 +36,11 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<!-- 工作流引擎activiti配置 -->
-		<!-- <dependency>
+		<dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter-basic</artifactId>
             <version>${activiti.version}</version>
-        </dependency> -->
+        </dependency>
 		<!-- 添加视图层和启动容器配置 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
