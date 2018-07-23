@@ -63,11 +63,10 @@
 	      <version>${mysql.version}</version>
 	    </dependency>
 	    <!-- 权限验证框架 -->
-	    <!-- <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring-boot-starter</artifactId>
-            <version>1.4.0-RC2</version>
-        </dependency> -->
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	    <!-- 模板引擎thymeleaf -->
 	    <dependency>
 			<groupId>org.springframework.boot</groupId>

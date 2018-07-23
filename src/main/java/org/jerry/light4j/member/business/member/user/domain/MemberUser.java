@@ -8,13 +8,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
 * 描述：member_user模型
 * @author tools
 */
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer","password" ,"new"})
+@DynamicUpdate
 @Entity
 @Table(name="member_user")
-public class MemberUser{
+public class MemberUser extends AbstractPersistable<Long>{
 	
     /**
     *自增列
