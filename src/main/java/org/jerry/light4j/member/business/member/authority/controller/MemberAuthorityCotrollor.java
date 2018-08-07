@@ -93,7 +93,7 @@ public class MemberAuthorityCotrollor{
 		return ResponseManager.handerResponse(MemberAuthority.class,null, list, HttpStatus.OK, "成功获取资源数据列表", null, pageTools);
 	}
     
-    @ApiOperation(value="数据查询所有", notes="查询member_user数据",response = ResponseDomain.class, tags = { "member.user",})
+    @ApiOperation(value="数据查询所有", notes="查询member_user数据",response = ResponseDomain.class, tags = { "member.authority",})
     @RequestMapping(value="/queryAll", method=RequestMethod.POST, produces = "application/json; charset=UTF-8", consumes = {"text/plain", "application/json; charset=UTF-8"})
     public ResponseEntity<?> queryAll(
 			@ApiParam(value = "member_user查询条件") @RequestBody MemberAuthorityView memberAuthorityView) {

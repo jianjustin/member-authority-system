@@ -8,15 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
 /**
 * 描述：member_role模型
 * @author tools
 */
 @Entity
 @Table(name="member_role")
-public class MemberRole extends AbstractPersistable<Long>{
+public class MemberRole{
 	
 	/**
     *主键ID

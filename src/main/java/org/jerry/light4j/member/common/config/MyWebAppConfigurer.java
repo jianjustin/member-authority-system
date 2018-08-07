@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author admin
  *
  */
+
 @Configuration
 public class MyWebAppConfigurer implements WebMvcConfigurer{
 

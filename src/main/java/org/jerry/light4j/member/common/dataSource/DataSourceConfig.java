@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 //@Configuration
 public class DataSourceConfig {
 
-	/*@Bean(name = "memberDataSource")
+	@Bean(name = "memberDataSource")
     @Qualifier("memberDataSource")
     @ConfigurationProperties(prefix="spring.datasource.member")
     public DataSource memberDataSource() {
@@ -23,5 +23,5 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix="spring.datasource.system")
     public DataSource systemDataSource() {
         return DataSourceBuilder.create().build();
-    }*/
+    }
 }
