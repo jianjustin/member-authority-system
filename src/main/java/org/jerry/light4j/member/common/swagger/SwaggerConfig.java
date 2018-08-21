@@ -15,19 +15,40 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 	
+	
 	@Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.jerry.light4j.member"))
-                .paths(PathSelectors.any())
-                .build();
-    }
+	public Docket basicImplementation() {
+		return new Docket(DocumentationType.SWAGGER_2).groupName("basic")
+				.select().paths(PathSelectors.ant("/basic/**")).build()
+				.apiInfo(apiInfo());
+	}
+	
+	@Bean
+	public Docket memberImplementation() {
+		return new Docket(DocumentationType.SWAGGER_2).groupName("member")
+				.select().paths(PathSelectors.ant("/member/**")).build()
+				.apiInfo(apiInfo());
+	}
+	
+	@Bean
+	public Docket systemImplementation() {
+		return new Docket(DocumentationType.SWAGGER_2).groupName("system")
+				.select().paths(PathSelectors.ant("/system/**")).build()
+				.apiInfo(apiInfo());
+	}
+	
+	@Bean
+	public Docket oauthImplementation() {
+		return new Docket(DocumentationType.SWAGGER_2).groupName("oauth")
+				.select().paths(PathSelectors.ant("/oauth/**")).build()
+				.apiInfo(apiInfo());
+	}
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("基于Spring Boot的用户权限系统")
                 .build();
     }
+    
+    
 }

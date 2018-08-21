@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
  * @author jian
  *
  */
-@Configuration
 public class OAuth2ServerConfig {
 	
 	private static final String DEMO_RESOURCE_ID = "member";
@@ -56,6 +55,7 @@ public class OAuth2ServerConfig {
                     .and()
                     .authorizeRequests()
 //                    .antMatchers("/product/**").access("#oauth2.hasScope('select') and hasRole('ROLE_USER')")
+                    //.antMatchers("/member/**").authenticated();//配置order访问控制，必须认证过后才可以访问
                     .antMatchers("/member/**").authenticated();//配置order访问控制，必须认证过后才可以访问
             // @formatter:on
         }
@@ -113,6 +113,8 @@ public class OAuth2ServerConfig {
         public static NoOpPasswordEncoder passwordEncoder() {
           return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
         }
+        
+        
 
     }
 

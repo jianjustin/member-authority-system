@@ -16,6 +16,8 @@ public interface MemberUserRepository extends BaseMotifyRepository<MemberUser, S
 	
 	public MemberUser findByMemberUserCode(String memberUserCode);
 	
+	public MemberUser findByMemberUserLoginAccount(String memberUserLoginAccount);
+	
 	public MemberUser findByMemberUserLoginAccountAndMemberUserLoginPassword(String memberUserLoginAccount,String memberUserLoginPassword);
 
 	

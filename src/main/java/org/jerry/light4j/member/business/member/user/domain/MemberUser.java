@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @DynamicUpdate
 @Entity
 @Table(name="member_user")
+@Component
 public class MemberUser{
 	
     /**
