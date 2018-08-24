@@ -47,6 +47,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("基于Spring Boot的用户权限系统")
+                .license("获取授权码")
+				.licenseUrl("oauth/authorize?client_id=client_1&response_type=code&redirect_uri=http://127.0.0.1:18125")
                 .build();
     }
     
