@@ -1,12 +1,13 @@
 package org.jerry.light4j.member.common.security;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -15,14 +16,17 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
+import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
+import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
-/**
- * oauth2服务器配置
- * @author jian
- *
- */
 public class OAuth2ServerConfig {
 	
 	private static final String DEMO_RESOURCE_ID = "member";
@@ -34,6 +38,7 @@ public class OAuth2ServerConfig {
 	 */
     @Configuration
     @EnableResourceServer
+    @Order(2)
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
         @Override
@@ -43,21 +48,16 @@ public class OAuth2ServerConfig {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            // @formatter:off
-            http
-                    // Since we want the protected resources to be accessible in the UI as well we need
-                    // session creation to be allowed (it's disabled by default in 2.0.6)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    .and()
-                    .requestMatchers().anyRequest()
-                    .and()
-                    .anonymous()
-                    .and()
-                    .authorizeRequests()
-//                    .antMatchers("/product/**").access("#oauth2.hasScope('select') and hasRole('ROLE_USER')")
-                    //.antMatchers("/member/**").authenticated();//配置order访问控制，必须认证过后才可以访问
-                    .antMatchers("/member/**").authenticated();//配置order访问控制，必须认证过后才可以访问
-            // @formatter:on
+           
+            
+    		http
+	        .anonymous()
+	        	.and()
+			.authorizeRequests()
+				.antMatchers("/order/**").authenticated()
+				.and()
+			.exceptionHandling()
+				.accessDeniedHandler(new OAuth2AccessDeniedHandler());
         }
     }
 
@@ -70,48 +70,91 @@ public class OAuth2ServerConfig {
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+        
+        private static String REALM="MY_OAUTH_REALM";
 
         @Autowired
         AuthenticationManager authenticationManager;
 
+        @Autowired
+        private TokenStore tokenStore;
+
+        @Autowired
+        AuthorizationEndpoint authorizationEndpoint;
+
+        @Autowired
+        CustomizeUserDetailsService customizeUserDetailsService;
+
+        @Autowired
+        private UserApprovalHandler userApprovalHandler;
+
+        @Autowired
+        private ClientDetailsService clientDetailsService;
+
+        @Bean
+        @Autowired
+        public TokenStoreUserApprovalHandler userApprovalHandler(TokenStore tokenStore){
+            TokenStoreUserApprovalHandler handler = new TokenStoreUserApprovalHandler();
+            handler.setTokenStore(tokenStore);
+            handler.setRequestFactory(new DefaultOAuth2RequestFactory(clientDetailsService));
+            handler.setClientDetailsService(clientDetailsService);
+            return handler;
+        }
+
+        @Bean
+        @Autowired
+        public ApprovalStore approvalStore(TokenStore tokenStore) {
+            TokenApprovalStore store = new TokenApprovalStore();
+            store.setTokenStore(tokenStore());
+            return store;
+        }
+
+        @PostConstruct
+        public void init() {
+            authorizationEndpoint.setUserApprovalPage("forward:/oauth/my_approval");
+            authorizationEndpoint.setErrorPage("forward:/oauth/my_error");
+        }
+
+
+
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            //配置两个客户端,一个用于password认证一个用于client认证
-            clients.inMemory().withClient("client_1")
-                    .resourceIds(DEMO_RESOURCE_ID)
-                    .authorizedGrantTypes("client_credentials", "refresh_token")
-                    .scopes("select")
-                    .authorities("client")
-                    .secret("123456")
-                    .and().withClient("client_2")
-                    .resourceIds(DEMO_RESOURCE_ID)
-                    .authorizedGrantTypes("password", "refresh_token")
-                    .scopes("select")
-                    .authorities("client")
-                    .secret("123456");
+
+            clients.inMemory()
+                    .withClient("fbed1d1b4b1449daa4bc49397cbe2350")
+                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
+                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
+                    .scopes("read","write")
+                    .secret("fbed1d1b4b1449daa4bc49397cbe2350")
+                    .accessTokenValiditySeconds(120)//Access token is only valid for 2 minutes.
+                    .refreshTokenValiditySeconds(600)//Refresh token is only valid for 10 minutes.
+                    .redirectUris("http://localhost:8080/session");
+
         }
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
             endpoints
-                    .tokenStore(tokenStore())
-                    .authenticationManager(authenticationManager);
+                    .authenticationManager(authenticationManager)
+                    .userDetailsService(customizeUserDetailsService)
+                    .userApprovalHandler(userApprovalHandler)
+                    .tokenEnhancer(new CustomTokenEnhancer())
+                    .tokenStore(tokenStore);
+            //endpoints.pathMapping(String "/oauth/confirm_access","/oauth/my_approval");
         }
 
         @Override
-        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-            //允许表单认证
-            oauthServer.allowFormAuthenticationForClients();
-        }
-
-        @Bean
-        public TokenStore tokenStore() {
-            return new InMemoryTokenStore();
+        public void configure(AuthorizationServerSecurityConfigurer security) {
+            security
+                    .allowFormAuthenticationForClients()
+                    .tokenKeyAccess("permitAll()")
+                    .checkTokenAccess("isAuthenticated()")
+                    .realm(REALM+"/client");
         }
         
         @Bean
-        public static NoOpPasswordEncoder passwordEncoder() {
-          return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+        public TokenStore tokenStore() {
+          return new InMemoryTokenStore();
         }
         
         
