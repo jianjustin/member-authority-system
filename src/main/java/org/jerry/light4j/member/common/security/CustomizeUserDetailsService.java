@@ -3,6 +3,7 @@ package org.jerry.light4j.member.common.security;
 import org.jerry.light4j.member.business.member.user.domain.MemberUser;
 import org.jerry.light4j.member.business.member.user.repository.MemberUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +30,7 @@ public class CustomizeUserDetailsService implements UserDetailsService{
 		if (memberUser == null) {
             throw new UsernameNotFoundException(memberUser.getMemberUserLoginAccount());
         }
-        return new MyUserPrincipal(memberUser);
+        return new User(memberUser.getMemberUserLoginAccount(),memberUser.getMemberUserLoginPassword(),null);
 	}
 
 }

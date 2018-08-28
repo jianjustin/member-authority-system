@@ -58,20 +58,7 @@ public class MemberUserCotrollor{
     	if(null == oldMemberUser){
     		ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户登陆失败", null, null);
     	}else{
-    		if(!client_id.equals(oldMemberUser.getMemberUserToken_Id())){
-    			ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户client_id异常,请联系管理员", null, null);
-    		}else{
-    			/*token创建(时间戳+client_id)*/
-    			Date date = new Date();
-    			String tokenid = MD5Utils.crypt(client_id + date.toString());
-        		/*用户会话创建*/
-    			Map<String,Object> dataMap = new HashMap<String, Object>();
-    			UserSession userSession = new UserSession();
-    			userSession.setTokenid(tokenid);
-    			dataMap.put("MemberUser", oldMemberUser);
-    			dataMap.put("UserSession", userSession);
-    			MemCacheManager.push(tokenid, dataMap);
-    		}
+    		
     	}
 		return responseEntity;
 	}

@@ -12,28 +12,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  */
 @Controller
-@RequestMapping("/")
 public class HomeController {
 
 	@Autowired
 	private MemberUserRepository memberUserRepository;
 	
-	@RequestMapping(value = "/swagger",method=RequestMethod.GET)
+	@RequestMapping(value = "swagger",method=RequestMethod.GET)
 	public String getSwagger() {
 		return "redirect:swagger-ui.html";
 	}
 	
-	@RequestMapping(value = "/",method=RequestMethod.GET)
+	@RequestMapping(value = "",method=RequestMethod.GET)
 	public String index() {
 		return "index";
 	}
 	
-	@RequestMapping(value = "/login",method=RequestMethod.GET)
+	@RequestMapping(value = "index",method=RequestMethod.GET)
+	public String index1() {
+		return "index";
+	}
+	
+	@RequestMapping(value = "login",method=RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 	
-	@RequestMapping(value = "/resourceList",method=RequestMethod.GET)
+	@RequestMapping(value = "resourceList",method=RequestMethod.GET)
 	public String resourceList() {
 		return "member/resourceList";
 	}

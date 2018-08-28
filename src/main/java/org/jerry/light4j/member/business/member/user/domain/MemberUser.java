@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
 * 描述：member_user模型
@@ -62,11 +59,6 @@ public class MemberUser{
     @Column(name = "MEMBER_USER_LOGIN_PASSWORD",columnDefinition = "varchar")
     private String memberUserLoginPassword;
     /**
-    *用户tokenid
-    */
-    @Column(name = "MEMBER_USER_TOKEN_ID",columnDefinition = "varchar")
-    private String memberUserToken_Id;
-    /**
     *用户最后登陆时间
     */
     @Column(name = "MEMBER_USER_CREATE_DATE",columnDefinition = "date")
@@ -81,6 +73,21 @@ public class MemberUser{
     */
     @Column(name = "MEMBER_USER_ORDER_BY",columnDefinition = "varchar")
     private String memberUserOrderBy;
+    /**
+     *用户ClientId
+     */
+     @Column(name = "MEMBER_USER_CLIENT_ID",columnDefinition = "varchar")
+     private String memberUserClientId;
+     /**
+      *用户ClientSecret
+      */
+     @Column(name = "MEMBER_USER_CLIENT_SECRET",columnDefinition = "varchar")
+     private String memberUserClientSecret;
+     /**
+      *用户RedirectUri
+      */
+     @Column(name = "MEMBER_USER_REDIRECT_URI",columnDefinition = "varchar")
+     private String memberUserRedirectUri;
 
 	public Long getPkId() {
 		return pkId;
@@ -142,12 +149,25 @@ public class MemberUser{
 	public void setMemberUserOrderBy(String memberUserOrderBy) {
 		this.memberUserOrderBy = memberUserOrderBy;
 	}
-	public String getMemberUserToken_Id() {
-		return memberUserToken_Id;
+	public String getMemberUserClientId() {
+		return memberUserClientId;
 	}
-	public void setMemberUserToken_Id(String memberUserToken_Id) {
-		this.memberUserToken_Id = memberUserToken_Id;
+	public void setMemberUserClientId(String memberUserClientId) {
+		this.memberUserClientId = memberUserClientId;
 	}
+	public String getMemberUserClientSecret() {
+		return memberUserClientSecret;
+	}
+	public void setMemberUserClientSecret(String memberUserClientSecret) {
+		this.memberUserClientSecret = memberUserClientSecret;
+	}
+	public String getMemberUserRedirectUri() {
+		return memberUserRedirectUri;
+	}
+	public void setMemberUserRedirectUri(String memberUserRedirectUri) {
+		this.memberUserRedirectUri = memberUserRedirectUri;
+	}
+	
 	
     
 	

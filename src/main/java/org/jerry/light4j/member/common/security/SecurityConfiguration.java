@@ -1,9 +1,12 @@
 package org.jerry.light4j.member.common.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,14 +21,15 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  */
 @Configuration
 @EnableWebSecurity
+@Order(2)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 	@Bean
     @Override
     protected UserDetailsService userDetailsService(){
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user_1").password("123456").authorities("USER").build());
-        manager.createUser(User.withUsername("user_2").password("123456").authorities("USER").build());
+        manager.createUser(User.withUsername("demoUser1").password("123456").authorities("USER,ROLE_USER").build());
+        manager.createUser(User.withUsername("demoUser2").password("123456").authorities("USER,ROLE_USER").build());
         return manager;
     }
 
@@ -35,10 +39,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
             .requestMatchers().anyRequest()
             .and()
             .authorizeRequests()
-            .antMatchers("/oauth/*").permitAll();
+            .antMatchers("/oauth/**").authenticated()
+            .and()
+            .formLogin().permitAll();
+    }
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(customAuthenticationProvider);
     }
     
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
