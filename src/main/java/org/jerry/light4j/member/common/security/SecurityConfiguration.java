@@ -31,9 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
             .anyRequest()
             .and()
             .authorizeRequests()
-            .antMatchers("/oauth/*").permitAll()
+            .antMatchers("/oauth/*").permitAll()//spring security默认的认证方式
             // swagger start
-            .antMatchers("/swagger-ui.html").permitAll()//配置成临时访问者可访问
+            .antMatchers("/swagger-ui.html").permitAll()//配置成普通访问者可访问
             .antMatchers("/swagger-resources/**").permitAll()
             .antMatchers("/images/**").permitAll()
             .antMatchers("/webjars/**").permitAll()
@@ -45,28 +45,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
             ;
     }
     
-    @Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.userDetailsService(new CustomizeUserDetailsService())
-			.passwordEncoder(passwordEncoder())
-			.and();
-	}
-    
-    @Override
-	public void configure(WebSecurity web) throws Exception{
-         super.configure(web);
-    }
-	
-    
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-    
-    @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
-      return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }
 }

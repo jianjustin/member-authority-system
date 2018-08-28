@@ -1,7 +1,6 @@
 package org.jerry.light4j.member.business.member.user.controller;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,16 +10,13 @@ import org.jerry.light4j.member.business.member.user.domain.MemberUserView;
 import org.jerry.light4j.member.business.member.user.repository.MemberUserRepository;
 import org.jerry.light4j.member.business.member.user.service.MemberUserService;
 import org.jerry.light4j.member.common.base.repository.impl.BaseQueryRepositoryImpl;
-import org.jerry.light4j.member.common.cache.MemCacheManager;
 import org.jerry.light4j.member.common.code.CodeUtils;
 import org.jerry.light4j.member.common.page.PageQueryBean;
 import org.jerry.light4j.member.common.page.PageTools;
 import org.jerry.light4j.member.common.page.PageUtils;
 import org.jerry.light4j.member.common.response.ResponseDomain;
 import org.jerry.light4j.member.common.response.ResponseManager;
-import org.jerry.light4j.member.common.session.UserSession;
 import org.jerry.light4j.member.common.sql.SqlUtils;
-import org.jerry.light4j.member.common.utils.MD5Utils;
 import org.jerry.light4j.member.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,20 +54,6 @@ public class MemberUserCotrollor{
     	if(null == oldMemberUser){
     		ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户登陆失败", null, null);
     	}else{
-    		if(!client_id.equals(oldMemberUser.getMemberUserToken_Id())){
-    			ResponseManager.handerResponse(MemberUser.class,oldMemberUser, null, HttpStatus.OK, "用户client_id异常,请联系管理员", null, null);
-    		}else{
-    			/*token创建(时间戳+client_id)*/
-    			Date date = new Date();
-    			String tokenid = MD5Utils.crypt(client_id + date.toString());
-        		/*用户会话创建*/
-    			Map<String,Object> dataMap = new HashMap<String, Object>();
-    			UserSession userSession = new UserSession();
-    			userSession.setTokenid(tokenid);
-    			dataMap.put("MemberUser", oldMemberUser);
-    			dataMap.put("UserSession", userSession);
-    			MemCacheManager.push(tokenid, dataMap);
-    		}
     	}
 		return responseEntity;
 	}

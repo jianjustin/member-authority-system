@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 /** 
  * MD5加密 
  */  
-public class MD5Utils {  
+public class EncryptionUtils {  
   
     /** 
      * Encodes a string 2 MD5 
@@ -15,13 +15,42 @@ public class MD5Utils {
      * @return Encoded String 
      * @throws NoSuchAlgorithmException 
      */  
-    public static String crypt(String str) {  
+    public static String cryptMD5(String str) {  
         if (str == null || str.length() == 0) {  
             throw new IllegalArgumentException("String to encript cannot be null or zero length");  
         }  
         StringBuffer hexString = new StringBuffer();  
         try {  
             MessageDigest md = MessageDigest.getInstance("MD5");  
+            md.update(str.getBytes());  
+            byte[] hash = md.digest();  
+            for (int i = 0; i < hash.length; i++) {  
+                if ((0xff & hash[i]) < 0x10) {  
+                    hexString.append("0" + Integer.toHexString((0xFF & hash[i])));  
+                } else {  
+                    hexString.append(Integer.toHexString(0xFF & hash[i]));  
+                }  
+            }  
+        } catch (NoSuchAlgorithmException e) {  
+            e.printStackTrace();  
+        }  
+        return hexString.toString();  
+    }  
+    
+    /** 
+     * Encodes a string 2 MD5 
+     *  
+     * @param str String to encode 
+     * @return Encoded String 
+     * @throws NoSuchAlgorithmException 
+     */  
+    public static String cryptSHA(String str) {  
+        if (str == null || str.length() == 0) {  
+            throw new IllegalArgumentException("String to encript cannot be null or zero length");  
+        }  
+        StringBuffer hexString = new StringBuffer();  
+        try {  
+            MessageDigest md = MessageDigest.getInstance("SHA");  
             md.update(str.getBytes());  
             byte[] hash = md.digest();  
             for (int i = 0; i < hash.length; i++) {  
